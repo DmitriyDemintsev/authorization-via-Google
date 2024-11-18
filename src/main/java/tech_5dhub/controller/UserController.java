@@ -10,6 +10,7 @@ import tech_5dhub.dto.UserDto;
 import tech_5dhub.dto.UserRegistration;
 import tech_5dhub.mapper.UserMapper;
 import tech_5dhub.model.User;
+import tech_5dhub.service.CalendarService;
 import tech_5dhub.service.UserService;
 
 import javax.validation.Valid;
@@ -22,8 +23,8 @@ import javax.validation.constraints.Positive;
 public class UserController {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
+    private final CalendarService calendarService;
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
@@ -48,6 +49,13 @@ public class UserController {
 
     @GetMapping("/loginSuccess")
     public String pathSuccess() {
+        getTest();
         return "Successful authorization";
+    }
+
+    @GetMapping("/events")
+    public String getTest() {
+        calendarService.getEventByIdAsync("fordevelopdda@gmail.com");
+        return "hallo";
     }
 }

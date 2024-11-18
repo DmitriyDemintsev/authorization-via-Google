@@ -1,4 +1,4 @@
-package tech_5dhub.security;
+package tech_5dhub.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import tech_5dhub.security.JwtConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +49,8 @@ public class SecurityConfig {
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests(requestMatcherRegistry ->
                 requestMatcherRegistry
+                        .requestMatchers("/users/events")
+                        .permitAll()
                         .requestMatchers("/users/reg")
                         .permitAll()
                         .requestMatchers("/users/auth/login")
@@ -60,7 +63,7 @@ public class SecurityConfig {
         http
                 .oauth2Login(formLogin -> formLogin
                         .permitAll()
-                        .defaultSuccessUrl("/users/loginSuccess")
+                        .defaultSuccessUrl("/users/loginSuccess", true)
                         .failureUrl("/users/loginFailure")
                         .successHandler(oAuth2LoginSuccessHandler)
                 );
@@ -69,7 +72,8 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

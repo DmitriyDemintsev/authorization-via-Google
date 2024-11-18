@@ -1,8 +1,11 @@
 package tech_5dhub.dto;
 
+import com.google.api.services.calendar.model.Event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,4 +20,5 @@ public class UserDto {
     private String role;
     private String password;
     private String provider;
+    private List<String> events;
 }

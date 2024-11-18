@@ -4,23 +4,28 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import tech_5dhub.model.User;
 import tech_5dhub.repository.UserRepository;
+import tech_5dhub.service.CalendarService;
 import tech_5dhub.service.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.Optional;
 
+
+@Slf4j
 @Component
 @AllArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private UserServiceImpl userService;
     private UserRepository userRepository;
+    private CalendarService calendarService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -37,6 +42,5 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         } else {
             userService.updateNewUserAfterOAuthLoginSuccess(email, name, fullName);
         }
-        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

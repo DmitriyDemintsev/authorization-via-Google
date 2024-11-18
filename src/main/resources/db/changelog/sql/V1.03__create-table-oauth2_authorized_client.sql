@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS user_events (
+user_id  BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+event_id VARCHAR
+);
