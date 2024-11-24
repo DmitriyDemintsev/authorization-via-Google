@@ -7,17 +7,18 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import tech_5dhub.security.JwtConfigurer;
@@ -45,29 +46,44 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    AuthenticationSuccessHandler oAuth2LoginSuccessHandler) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.sessionManagement((sessionManagement) ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.authorizeHttpRequests(requestMatcherRegistry ->
-                requestMatcherRegistry
-                        .requestMatchers("/users/events")
-                        .permitAll()
-                        .requestMatchers("/users/reg")
-                        .permitAll()
-                        .requestMatchers("/users/auth/login")
-                        .permitAll()
-        );
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
                 );
+        http.oauth2Client(Customizer.withDefaults());
         http
                 .oauth2Login(formLogin -> formLogin
                         .permitAll()
                         .defaultSuccessUrl("/users/loginSuccess", true)
-                        .failureUrl("/users/loginFailure")
                         .successHandler(oAuth2LoginSuccessHandler)
                 );
+
         return http.build();
+
+//        http.sessionManagement((sessionManagement) ->
+//                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        http.authorizeHttpRequests(requestMatcherRegistry ->
+//                requestMatcherRegistry
+//                        .requestMatchers("/users/events")
+//                        .permitAll()
+////                        .requestMatchers("/users/reg")
+////                        .permitAll()
+////                        .requestMatchers("/users/auth/login")
+////                        .permitAll()
+//        );
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated()
+//                );
+//        http.oauth2Client(Customizer.withDefaults());
+//        http
+//                .oauth2Login(formLogin -> formLogin
+//                        .permitAll()
+//                        .defaultSuccessUrl("/users/loginSuccess", true)
+//                        .failureUrl("/users/loginFailure")
+//                        .successHandler(oAuth2LoginSuccessHandler)
+//                );
+//        return http.build();
     }
 
 

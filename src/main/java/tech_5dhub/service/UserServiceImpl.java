@@ -5,10 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
+import tech_5dhub.client.dto.CalenderItems;
 import tech_5dhub.exception.UserNotFoundException;
 import tech_5dhub.model.User;
 import tech_5dhub.repository.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -17,25 +20,25 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final WebClient webClient;
+    private final CalendarService calendarService;
 
     @Override
     @Transactional
     public User addUser(User user) {
-        log.debug("Записываем юзера в БД");
+        log.debug("Record the user in the database");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
     public User getUserById(Long userId) {
-        log.debug("Получаем пользователя по id");
+        log.debug("Get the user by id");
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("User was not found"));
     }
 
     public void createNewUserAfterOAuthLoginSuccess(String email, String name, String fullName) {
-        log.debug("Записываем нового пользователя в БД");
+        log.debug("Record the new user in the database");
         User user = new User();
         user.setNameFromGoogle(name);
         user.setFullNameFromGoogle(fullName);
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateNewUserAfterOAuthLoginSuccess(String email, String name, String fullName) {
-        log.debug("Обновляем данные уже зарегистрированного пользователя");
+        log.debug("Updating the data of an already registered user");
         User user = userRepository.getByEmail(email);
         user.setNameFromGoogle(name);
         user.setFullNameFromGoogle(fullName);
@@ -57,17 +60,18 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
     }
-//
-//    public void addCalendarEvents(String email) throws IOException {
-//        log.debug("Добавляем события из календаря");
-//        List<Event> events = calendarService.getEvents();
-//        List<Long> newList = new ArrayList<>();
-//        for (Event event: events) {
-//            newList.add(Long.valueOf(event.getId()));
-//        }
-//        User user = userRepository.getByEmail(email);
-//        user.setEvent(newList);
-//    }
 
-
+    @Override
+    public List<String> addCalendarEvents(String email) {
+        log.debug("Adding events from the calendar");
+        List<CalenderItems> events = calendarService.getEventByIdAsync(email);
+        List<String> newList = new ArrayList<>();
+        for (CalenderItems event: events) {
+            newList.add(event.getId());
+        }
+        User user = userRepository.getByEmail(email);
+        user.setEvent(newList);
+        user = userRepository.save(user);
+        return user.getEvent();
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import tech_5dhub.client.dto.CalenderItems;
 import tech_5dhub.dto.UserDto;
 import tech_5dhub.dto.UserRegistration;
 import tech_5dhub.mapper.UserMapper;
@@ -15,6 +16,7 @@ import tech_5dhub.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -24,7 +26,6 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
-    private final CalendarService calendarService;
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
@@ -49,13 +50,8 @@ public class UserController {
 
     @GetMapping("/loginSuccess")
     public String pathSuccess() {
-        getTest();
         return "Successful authorization";
     }
 
-    @GetMapping("/events")
-    public String getTest() {
-        calendarService.getEventByIdAsync("fordevelopdda@gmail.com");
-        return "hallo";
-    }
+
 }
