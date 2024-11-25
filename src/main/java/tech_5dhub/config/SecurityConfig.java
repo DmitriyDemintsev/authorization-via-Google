@@ -59,31 +59,6 @@ public class SecurityConfig {
                 );
 
         return http.build();
-
-//        http.sessionManagement((sessionManagement) ->
-//                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        http.authorizeHttpRequests(requestMatcherRegistry ->
-//                requestMatcherRegistry
-//                        .requestMatchers("/users/events")
-//                        .permitAll()
-////                        .requestMatchers("/users/reg")
-////                        .permitAll()
-////                        .requestMatchers("/users/auth/login")
-////                        .permitAll()
-//        );
-//        http
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .anyRequest().authenticated()
-//                );
-//        http.oauth2Client(Customizer.withDefaults());
-//        http
-//                .oauth2Login(formLogin -> formLogin
-//                        .permitAll()
-//                        .defaultSuccessUrl("/users/loginSuccess", true)
-//                        .failureUrl("/users/loginFailure")
-//                        .successHandler(oAuth2LoginSuccessHandler)
-//                );
-//        return http.build();
     }
 
 
