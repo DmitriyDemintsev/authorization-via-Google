@@ -24,13 +24,13 @@ public class CalendarService {
     public List<CalenderItems> getEventByIdAsync(final String calendarId) {
         log.debug("Получаем id событий из календаря пользователя");
         WebClient.RequestHeadersSpec<?> request = webClient
-                .get() //метод для api контроллера (может быть post и т.д)
-                .uri("/calendars/" + calendarId + "/events") //продолжение пути/адреса
+                .get()
+                .uri("/calendars/" + calendarId + "/events")
                 .attributes(clientRegistrationId("google"));
-        return request // интеграция - передача токена после аутентифиации пользователя
-                .retrieve() // отправка запроса
-                .bodyToMono(CalendarResponse.class) // указываем, какого класса ответ должен быть
-                .block() // заканчиваем запрос – блокируем асинхронный клиент
-                .getItems(); // в полученном CalendarResponse забираем айдишники событий
+        return request
+                .retrieve()
+                .bodyToMono(CalendarResponse.class)
+                .block()
+                .getItems();
     }
 }
