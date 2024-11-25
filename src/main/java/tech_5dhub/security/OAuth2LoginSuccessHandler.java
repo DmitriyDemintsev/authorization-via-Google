@@ -45,10 +45,5 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         } else {
             userService.updateNewUserAfterOAuthLoginSuccess(email, name, fullName);
         }
-//                    log.debug("получаем события из календаря пользователя");
-//        userRepository.findByEmail(email).get().setEvent(calendarService.getEventByIdAsync(email).stream()
-//                .map(it -> it.getId())
-//            .collect(Collectors.toList()));
-//        super.onAuthenticationSuccess(request, response, authentication);
     }
 }
