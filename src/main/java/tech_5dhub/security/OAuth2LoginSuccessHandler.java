@@ -9,15 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import tech_5dhub.controller.UserController;
 import tech_5dhub.model.User;
 import tech_5dhub.repository.UserRepository;
-import tech_5dhub.service.CalendarService;
 import tech_5dhub.service.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -27,8 +24,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private UserServiceImpl userService;
     private UserRepository userRepository;
-    private UserController userController;
-    private CalendarService calendarService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -45,10 +40,5 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         } else {
             userService.updateNewUserAfterOAuthLoginSuccess(email, name, fullName);
         }
-//                    log.debug("получаем события из календаря пользователя");
-//        userRepository.findByEmail(email).get().setEvent(calendarService.getEventByIdAsync(email).stream()
-//                .map(it -> it.getId())
-//            .collect(Collectors.toList()));
-//        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

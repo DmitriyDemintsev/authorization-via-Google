@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import tech_5dhub.security.JwtConfigurer;
@@ -59,31 +58,6 @@ public class SecurityConfig {
                 );
 
         return http.build();
-
-//        http.sessionManagement((sessionManagement) ->
-//                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        http.authorizeHttpRequests(requestMatcherRegistry ->
-//                requestMatcherRegistry
-//                        .requestMatchers("/users/events")
-//                        .permitAll()
-////                        .requestMatchers("/users/reg")
-////                        .permitAll()
-////                        .requestMatchers("/users/auth/login")
-////                        .permitAll()
-//        );
-//        http
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .anyRequest().authenticated()
-//                );
-//        http.oauth2Client(Customizer.withDefaults());
-//        http
-//                .oauth2Login(formLogin -> formLogin
-//                        .permitAll()
-//                        .defaultSuccessUrl("/users/loginSuccess", true)
-//                        .failureUrl("/users/loginFailure")
-//                        .successHandler(oAuth2LoginSuccessHandler)
-//                );
-//        return http.build();
     }
 
 
