@@ -2,6 +2,9 @@ package tech_5dhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,4 +28,9 @@ public class User {
     private String role;
     private String password;
     private String provider;
+    @ElementCollection
+    @ToStringExclude
+    @CollectionTable(name = "user_events",
+            joinColumns = @JoinColumn(name = "user_id"))
+    private List<String> event;
 }

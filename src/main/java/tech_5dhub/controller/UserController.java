@@ -6,14 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import tech_5dhub.client.dto.CalenderItems;
 import tech_5dhub.dto.UserDto;
 import tech_5dhub.dto.UserRegistration;
 import tech_5dhub.mapper.UserMapper;
 import tech_5dhub.model.User;
+import tech_5dhub.service.CalendarService;
 import tech_5dhub.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -22,7 +25,6 @@ import javax.validation.constraints.Positive;
 public class UserController {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
 
     @Autowired
@@ -50,4 +52,6 @@ public class UserController {
     public String pathSuccess() {
         return "Successful authorization";
     }
+
+
 }

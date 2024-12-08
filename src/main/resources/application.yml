@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: authorization-via-Google
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authviagoogle
+    username: dmitriydemintsev
+    password: root
+    driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${client.id}
+            client-secret: ${client.secret}
+            scope:
+              - openid
+              - profile
+              - email
+              - https://www.googleapis.com/auth/calendar
+              - https://www.googleapis.com/auth/calendar.events
+              - https://www.googleapis.com/auth/calendar.events.readonly
+              - https://www.googleapis.com/auth/calendar.readonly
+              - https://www.googleapis.com/auth/calendar.settings.readonly
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        ddl-auto: validate
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources.add-mappings: false
+  sql:
+    init:
+      mode: always
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: INFO
+          JpaTransactionManager: DEBUG
+          transaction: INFO
+          interceptor: TRACE
+          hibernate:
+            SQL: DEBUG
+      hibernate:
+        type:
+          descriptor:
+            sql.BasicBinder: TRACE
+  file:
+    path:
+      app:
+        log
+jwt:
+  header: Authorization
+  secret: ${jwt.secret}
+  expiration: 604800000
+google:
+  calendar:
+    base-uri: https://www.googleapis.com/calendar/v3
